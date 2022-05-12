@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed; // Скорость передвижения
@@ -21,26 +22,30 @@ public class CharacterController : MonoBehaviour
     public LayerMask whatIsGround;             // Какой слой является землей
     public LayerMask whatIsSolid;             // Какой слой является землей
 
-    public int allowJumpTimes;                 // Количество доступных прыжков
+    public int allowJump;                 // Количество доступных прыжков
     private int _airJumpCount;                 // Счетчик прыжков
-
 
     [SerializeField] GameObject _deathEffect;
     [SerializeField] GameObject _jumpEffect;
 
+
+    public int i = 0;
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveDirection = context.ReadValue<Vector2>();
-        //Move(_moveDirection);
+        Move(_moveDirection);
     }
 
-
     public void OnJump(InputAction.CallbackContext context)
-    {
+    {    
         if (!_inAir)
         {
             _inAir = true;
-            Jump();
+            if (i % 3 == 0)
+            {
+                Jump();
+            }
+            i++;
         }
     }
 
@@ -63,6 +68,18 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         Move(_moveDirection);
+        
+        if (_isGrounded || _isSolidObject)
+        {
+            _airJumpCount = 0;
+            i = 0;
+        }
+
+
+        if (transform.position.y < -7)
+        {
+            MenuController.DiedMenu();
+        }
     }
 
     private void Move(Vector2 direction)
@@ -73,38 +90,35 @@ public class CharacterController : MonoBehaviour
         _anim.SetFloat("Speed", Mathf.Abs(direction.x));
 
         if (direction.x > 0 && !_isFacingRight)
-            //отражаем персонажа вправо
             Flip();
-        //обратная ситуация. отражаем персонажа влево
         else if (direction.x < 0 && _isFacingRight)
             Flip();
     }
+
+
 
     private void Jump()
     {
         if (_inAir)
         {
             _inAir = false;
-            if (allowJumpTimes <= 0)
+            if (allowJump <= 0)
                 return;
 
             else if ((_isGrounded || _isSolidObject) && _airJumpCount == 0)
             {
                 rigid.velocity += Vector2.up * _jumpSpeed;
-                //rigid.AddForce(Vector2.up * _jumpSpeed);
                 Instantiate(_jumpEffect, transform.position, Quaternion.identity);
             }
 
-            else if (_airJumpCount < allowJumpTimes - 1)
+            else if (_airJumpCount < allowJump - 1)
             {
                 rigid.velocity += Vector2.up * _jumpSpeed;
-                //rigid.AddForce(Vector2.up * _jumpSpeed);
                 Instantiate(_jumpEffect, transform.position, Quaternion.identity);
                 _airJumpCount++;
             }    
 
         }
-
     }
 
 
