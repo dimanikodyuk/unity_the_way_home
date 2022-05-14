@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            GameControll.currentLives--;
+            //GameControll.currentLives--;
         }
         else if (collision.CompareTag("Ground"))
         {

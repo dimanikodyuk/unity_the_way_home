@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,45 +7,63 @@ using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
-   
+    [SerializeField] private Button _newGame;
+    [SerializeField] private Button _restartGame;
+    [SerializeField] private Button _mainMenu;
+    [SerializeField] private Button _quitGame;
+    [SerializeField] private Button _loadGame;
+    [SerializeField] private Button _settingGame;
+
+    public static Action onStartNewGame;
+    public static Action onRestartGame;
+    public static Action onLoadGame;
+    public static Action onMainMenu;
+    public static Action onSettingNewGame;
+    public static Action onQuitNewGame;
+
+    private void Start()
+    {
+        _newGame.onClick.AddListener(NewGameHandler);
+        _restartGame.onClick.AddListener(RestartGameHandler);
+        _mainMenu.onClick.AddListener(MainMenuHandler);
+        _quitGame.onClick.AddListener(QuitGameHandler);
+        _loadGame.onClick.AddListener(LoadGameHandler);
+        _settingGame.onClick.AddListener(SettingsHandler);
+    }
+
     // Update is called once per frame
     void Update()
     {
         
     }
 
-    public void StartGame()
+    public void NewGameHandler()
     {
-        SceneManager.LoadScene(2);
+        onStartNewGame?.Invoke();
     }
 
-    public void RestartGame()
+    public void RestartGameHandler()
     {
-        SceneManager.LoadScene(2);
+        onRestartGame?.Invoke();
     }
 
-    public void MainMenu()
+    public void MainMenuHandler()
     {
-        SceneManager.LoadScene(0);
+        onMainMenu?.Invoke();
     }
 
-    public static void DiedMenu()
+    public void QuitGameHandler()
     {
-        SceneManager.LoadScene(1);
+        onQuitNewGame?.Invoke();
     }
 
-    public void QuitGame()
+    public void LoadGameHandler()
     {
-        Application.Quit();
+        onLoadGame?.Invoke();
     }
 
-    public void LoadGame()
+    public void SettingsHandler()
     {
-
-    }
-
-    public void Settings()
-    {
-
+        onSettingNewGame?.Invoke();
     }
 }

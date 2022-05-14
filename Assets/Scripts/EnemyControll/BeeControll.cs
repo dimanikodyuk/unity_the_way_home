@@ -27,9 +27,6 @@ public class BeeControll : MonoBehaviour
   
     void Update()
     {
-
-        Debug.Log(Mathf.Abs(transform.position.x - _target.position.x));
-
         CheckTarget();
         CheckAttack();
         
@@ -49,6 +46,7 @@ public class BeeControll : MonoBehaviour
             return;
         }
         var direction = new Vector3(_target.position.x - transform.position.x, _target.position.y + _targetHeightPos - transform.position.y, 0);
+        direction = direction.normalized;
         direction = direction.normalized;
         Motion(direction);
     }

@@ -32,6 +32,7 @@ public class CharacterController : MonoBehaviour
     public int i = 0;
     public void OnMove(InputAction.CallbackContext context)
     {
+       
         _moveDirection = context.ReadValue<Vector2>();
         Move(_moveDirection);
     }
@@ -76,10 +77,10 @@ public class CharacterController : MonoBehaviour
         }
 
 
-        if (transform.position.y < -7)
-        {
-            MenuController.DiedMenu();
-        }
+        //if (transform.position.y < -7)
+        //{
+        //    MenuController.DiedMenu();
+        //}
     }
 
     private void Move(Vector2 direction)
