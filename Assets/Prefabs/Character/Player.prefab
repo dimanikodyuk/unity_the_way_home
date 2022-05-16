@@ -34,6 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 634210878084147385}
+  - {fileID: 7720610392164273405}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,6 +105,11 @@ MonoBehaviour:
   _jumpSpeed: 2.4
   rigid: {fileID: 634210876518016923}
   _anim: {fileID: 634210876518016922}
+  _deathEffect: {fileID: 3050166839344882594, guid: db40484fe427a68489e2275a1427cc1f,
+    type: 3}
+  _jumpEffect: {fileID: 3050166839344882594, guid: db40484fe427a68489e2275a1427cc1f,
+    type: 3}
+  _wallCheker: {fileID: 7720610392164273405}
   groundCheck: {fileID: 634210878084147385}
   whatIsGround:
     serializedVersion: 2
@@ -112,10 +118,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   allowJump: 3
-  _deathEffect: {fileID: 3050166839344882594, guid: db40484fe427a68489e2275a1427cc1f,
-    type: 3}
-  _jumpEffect: {fileID: 3050166839344882594, guid: db40484fe427a68489e2275a1427cc1f,
-    type: 3}
   i: 0
 --- !u!114 &634210876518016901
 MonoBehaviour:
@@ -307,4 +309,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 634210876518016902}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4280664095645239639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7720610392164273405}
+  m_Layer: 0
+  m_Name: WallChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7720610392164273405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4280664095645239639}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.456, y: -0.132, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 634210876518016902}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -82,7 +82,11 @@ public class GameControll : MonoBehaviour
     {
         SceneManager.LoadScene(levelNum);
         yield return new WaitForSeconds(0.25f);
-        Instantiate(_player, playerPoss, Quaternion.identity);
+        if(levelNum != 1)
+        {
+            Instantiate(_player, playerPoss, Quaternion.identity);
+        }
+        
     }
 
     private void LoadGameStorageData()

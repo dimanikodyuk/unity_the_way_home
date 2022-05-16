@@ -5,10 +5,17 @@ using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
+    // Player parameters
     [SerializeField] private float _moveSpeed; // Скорость передвижения
     [SerializeField] private float _jumpSpeed;   // Скорость/сила прыжка
     [SerializeField] Rigidbody2D rigid;        //
     [SerializeField] Animator _anim;           // Аниматор персонажа
+    // Effects
+    [SerializeField] GameObject _deathEffect;
+    [SerializeField] GameObject _jumpEffect;
+    // WallCheker
+    [SerializeField] Transform _wallCheker;
+    private bool isWall = false;
 
     private Vector2 _moveDirection;            // Направление движения
     private bool _isFacingRight = true;        // Проверка правильно ли повёрнут персонаж
@@ -25,16 +32,11 @@ public class CharacterController : MonoBehaviour
     public int allowJump;                 // Количество доступных прыжков
     private int _airJumpCount;                 // Счетчик прыжков
 
-    [SerializeField] GameObject _deathEffect;
-    [SerializeField] GameObject _jumpEffect;
-
-
     public int i = 0;
     public void OnMove(InputAction.CallbackContext context)
     {
-       
         _moveDirection = context.ReadValue<Vector2>();
-        Move(_moveDirection);
+        Move(_moveDirection);       
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -55,9 +57,20 @@ public class CharacterController : MonoBehaviour
         Jump();
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsGround);
         _isSolidObject = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsSolid);
+      
+        // WallFall
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_wallCheker.position, 0.1f);
+        isWall = colliders.Length > 0;
+        if (isWall)
+        {
+            rigid.velocity = new Vector2(rigid.velocity.x, -0.5f);
+            _anim.SetBool("isWall", true);
+        }
+
         if (_isGrounded || _isSolidObject)
         {
             _airJumpCount = 0;
+            _anim.SetBool("isJumped", false);
         }
     }
 
@@ -72,15 +85,12 @@ public class CharacterController : MonoBehaviour
         
         if (_isGrounded || _isSolidObject)
         {
+            _anim.SetBool("isJumped", false);
+            _anim.SetBool("isWall", false);
             _airJumpCount = 0;
             i = 0;
         }
 
-
-        //if (transform.position.y < -7)
-        //{
-        //    MenuController.DiedMenu();
-        //}
     }
 
     private void Move(Vector2 direction)
@@ -110,6 +120,7 @@ public class CharacterController : MonoBehaviour
             {
                 rigid.velocity += Vector2.up * _jumpSpeed;
                 Instantiate(_jumpEffect, transform.position, Quaternion.identity);
+                _anim.SetBool("isJumped", true);
             }
 
             else if (_airJumpCount < allowJump - 1)
@@ -117,11 +128,11 @@ public class CharacterController : MonoBehaviour
                 rigid.velocity += Vector2.up * _jumpSpeed;
                 Instantiate(_jumpEffect, transform.position, Quaternion.identity);
                 _airJumpCount++;
+                _anim.SetBool("isJumped", true);
             }    
 
         }
     }
-
 
 
     private void Flip()
@@ -131,5 +142,29 @@ public class CharacterController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "WallZone")
+    //    {
+    //        _isGrounded = false;
+    //        _anim.SetBool("isJumped", false);
+    //        _anim.SetBool("isWall", true);
+    //        if (_anim.GetBool("isJumped") == false)
+    //        {
+    //            rigid.gravityScale = 0.1f;
+    //        }        
+    //    }
+    //}
+
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "WallZone")
+    //    {
+    //        _isGrounded = false;
+    //        _anim.SetBool("isWall", false);
+    //        rigid.gravityScale = 1.0f;
+    //    }
+    //}
 
 }
