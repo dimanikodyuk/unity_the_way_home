@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Button _quitGame;
     [SerializeField] private Button _loadGame;
     [SerializeField] private Button _settingGame;
-
+  
     public static Action onStartNewGame;
     public static Action onRestartGame;
     public static Action onLoadGame;
@@ -31,11 +31,6 @@ public class MenuController : MonoBehaviour
         _settingGame.onClick.AddListener(SettingsHandler);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void NewGameHandler()
     {

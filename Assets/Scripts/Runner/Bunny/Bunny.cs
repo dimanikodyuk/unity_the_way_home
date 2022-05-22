@@ -13,12 +13,13 @@ public class Bunny : MonoBehaviour
     [SerializeField] private Transform _groundCheck;              
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private TMP_Text _bunnyText;
+
     
     private float _checkRadius = 0.15f;        
     private bool _isGrounded = false;
 
     public static int countLives = 3;
-    private int score = 0;
+    //private int score = 0;
 
     // Start is called before the first frame update
     void Start()

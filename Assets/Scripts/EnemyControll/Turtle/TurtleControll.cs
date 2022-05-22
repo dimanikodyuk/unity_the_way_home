@@ -9,11 +9,7 @@ public class TurtleControll : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && _animTurtle.GetBool("Spike") == true)
-        {
-            //GameControll.currentLives--;
-        }
-        else if (collision.CompareTag("Player"))
+        if (collision.gameObject.tag == "Player")
         {
             _animTurtle.SetBool("Spike", true);
         }

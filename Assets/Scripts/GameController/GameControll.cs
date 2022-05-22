@@ -3,24 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 public class GameControll : MonoBehaviour
 {
+    // PLAYER
     [SerializeField] private int _livesPlayer;
     [SerializeField] private int _maxLivesPlayer;
+    [SerializeField] private GameObject _player;
+    // SETTING MENU
+    [SerializeField] private GameObject _menuSetting;
+    [SerializeField] private SFXType _sfxClick;
+    [SerializeField] private MusicType _musicMenu;
+    [SerializeField] private MusicType _musicGame;
+    [SerializeField] private TMP_Text _soundValue;
+    [SerializeField] private TMP_Text _sfxValue;
 
-    [SerializeField] GameObject _player;
+    
 
-    private const string StorageDataFolder = "C:\\GIT\\unity_the_way_home\\SaveData";
-    private const string StorageDataFile = "GameStorageData.json";
+    private bool isPaused = false;
+    public static Action onChangeVolume;
+
+    public static Action<int> onChangeLive;
+    public static Action<int> onChangeScore;
+
 
     public void Start()
     {
+        PlayMusic(_musicMenu);
         DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(_menuSetting);
 
         MenuController.onStartNewGame += StartNewGameHandler;
         MenuController.onRestartGame += RestartGameHandler;
@@ -28,125 +45,182 @@ public class GameControll : MonoBehaviour
         MenuController.onMainMenu += MainMenuHandler;
         MenuController.onSettingNewGame += SettingHandler;
         MenuController.onQuitNewGame += QuitHandler;
+        
+        CharacterController.onPaused += PauseMenu;
+        CharacterController.onJump += PlayShortSFX;
 
         CheckpointControll.onGameSave += PrepateGameStorageData;
+       
+        MenuSettings.onBack += BackSetting;
+        MenuSettings.onPressed += PlayShortSFX;
+        MenuSettings.onChangeMusicVolume += SoundVolumeSetting;
+        MenuSettings.onChangeSFXVolume += SFXVolumeSetting;
+
+        FruitsControll.onCollectedFruits += PlayShortSFX;
     }
 
 
     // --- START GAME MENU --- //
     private void StartNewGameHandler()
     {
-        StartCoroutine(LoadLevelCoroutine(2, new Vector3(-7.32f, -2.57f, 1)));
+        PlayShortSFX(_sfxClick);
+        int levelNum = 2;
+        int score = 0;
+        int lives = _livesPlayer;
+        Vector3 pos = new Vector3(-7.32f, -2.57f, 1);
+
+        StartCoroutine(LoadLevelCoroutine(levelNum, score, lives, pos));
+        var gameStorageData = GetGameStorageData(score, lives, pos, levelNum);
+        var gameStorageRaw = JsonUtility.ToJson(gameStorageData, true);
+        SaveToPrefs(gameStorageRaw);
     }
 
     private void RestartGameHandler()
     {
-        StartNewGameHandler();
+        PlayShortSFX(_sfxClick);
+        LoadGameStorageData();
     }
 
     private void LoadGameHandler()
-    {
+    {      
+        PlayShortSFX(_sfxClick);
         LoadGameStorageData();
     }
 
     private void MainMenuHandler()
-    {
+    {      
+        PlayShortSFX(_sfxClick);
         SceneManager.LoadScene("MainMenu");
     }
 
     private void SettingHandler()
     {
-        
+        PlayShortSFX(_sfxClick);
+        _menuSetting.SetActive(true);
     }
 
     private void QuitHandler()
     {
+        PlayShortSFX(_sfxClick);
         Application.Quit();
     }
     // --- END GAME MENU --- //
 
-
-    private void PrepateGameStorageData(int scorePoint, int fruits, Vector3 position, int levelNumber)
+    // --- START SETTING MENU --- //
+    private void PauseMenu()
     {
-        var gameStorageData = GetGameStorageData(scorePoint, fruits, position, levelNumber);
-
-        var gameStorageRaw = JsonUtility.ToJson(gameStorageData, true);
-        SaveToFile(gameStorageRaw);
-
-        //Debug.Log($"Game Storage data: {gameStorageRaw}");
+        if (!isPaused)
+        {
+            _menuSetting.SetActive(true);
+            isPaused = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            _menuSetting.SetActive(false);
+            isPaused = false;
+            Time.timeScale = 1;
+        }
     }
 
-    
+    private void SoundVolumeSetting(float musicVolume)
+    {
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        _soundValue.text = (Math.Round(musicVolume, 2) * 100).ToString();
+        ApplySetting();
+    }
 
-    IEnumerator LoadLevelCoroutine(int levelNum, Vector3 playerPoss)
+    private void SFXVolumeSetting(float sfxVolume)
+    {
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+        _sfxValue.text = (Math.Round(sfxVolume, 2) * 100).ToString();
+        ApplySetting();
+    }
+
+    private void BackSetting()
+    {
+        _menuSetting.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    private void ApplySetting()
+    {
+        onChangeVolume?.Invoke();
+    }
+
+    // --- END SETTING MENU --- //
+
+
+    // --- START AUDIO --- //
+    public static void PlayShortSFX(SFXType name)
+    {
+        AudioManager.PlaySFX(name);
+    }
+  
+    public static void PlayMusic(MusicType name)
+    {
+        AudioManager.PlayMusic(name);
+    } 
+    
+    // --- END AUDIO --- //
+
+    private void PrepateGameStorageData(int scorePoint, int health, Vector3 position, int levelNumber)
+    {
+        var gameStorageData = GetGameStorageData(scorePoint, health, position, levelNumber);
+        var gameStorageRaw = JsonUtility.ToJson(gameStorageData, true);
+        SaveToPrefs(gameStorageRaw);
+    }
+
+    IEnumerator LoadLevelCoroutine(int levelNum, int scorePoint, int healthCount, Vector3 playerPoss)
     {
         SceneManager.LoadScene(levelNum);
+        PlayMusic(_musicGame);
         yield return new WaitForSeconds(0.25f);
-        if(levelNum != 1)
+        //CharacterController.currPlayerLive = healthCount;
+        //CharacterController.currPlayerScore = scorePoint;
+        //onInitLive?.Invoke(healthCount);
+
+        if (levelNum != 1 && GameObject.FindGameObjectWithTag("Player") == null)
         {
             Instantiate(_player, playerPoss, Quaternion.identity);
         }
-        
     }
+
+    // --- START PLAYER UI --- //
+
+    public void ChangeLive(int liveCount)
+    {
+        onChangeLive?.Invoke(liveCount);
+    }
+
+    public void ChangeScore(int scoreCount)
+    {
+        onChangeScore?.Invoke(scoreCount);
+    }
+
+    // -- END PLAYER UI --- //
 
     private void LoadGameStorageData()
     {
-        var dataRaw = LoadFromFile();
+        var dataRaw = PlayerPrefs.GetString("SaveData");
         var gameStorageData = JsonUtility.FromJson<GameStorageData>(dataRaw);
-        StartCoroutine(LoadLevelCoroutine(gameStorageData.LevelNumber, gameStorageData.Position));
-
-        //Debug.Log($"[LoadGameStorageData] data: scorePoint: {gameStodateData.ScorePoint}, fruits: {gameStodateData.Fruits}" +
-        //    $"Position:{gameStodateData.Position},LevelNumber: {gameStodateData.LevelNumber}");
+        StartCoroutine(LoadLevelCoroutine(gameStorageData.LevelNumber, gameStorageData.ScorePoint, gameStorageData.Health, gameStorageData.Position));
     }
 
-    private GameStorageData GetGameStorageData(int scorePoint, int fruits, Vector3 position, int levelNumver)
+    public static GameStorageData GetGameStorageData(int scorePoint, int health, Vector3 position, int levelNumver)
     {
         return new GameStorageData()
         {
             ScorePoint = scorePoint,
-            Fruits = fruits,
+            Health = health,
             Position = position,
             LevelNumber = levelNumver
         };
     }
 
-    private void SaveToFile(string data)
+    private void SaveToPrefs(string data)
     {
-        if (!System.IO.Directory.Exists(StorageDataFolder))
-        {
-            System.IO.Directory.CreateDirectory(StorageDataFolder);
-        }
-
-        var filePath = Path.Combine(StorageDataFolder, StorageDataFile);
-
-        using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
-        {
-            byte[] buffer = Encoding.Default.GetBytes(data);
-            fileStream.Write(buffer, 0, buffer.Length);
-            Debug.Log($"Data {data} was succesful saved, at path: {filePath}");
-        }
-    }
-
-    private string LoadFromFile()
-    {
-        var filePath = Path.Combine(StorageDataFolder, StorageDataFile);
-
-        if (!System.IO.File.Exists(filePath))
-        {
-            Debug.Log($"File at path {filePath} did not exists");
-            return null;
-        }
-
-        var result = "";
-
-        using (FileStream fileStream = System.IO.File.OpenRead(filePath))
-        {
-            byte[] buffer = new byte[fileStream.Length];
-            fileStream.Read(buffer, 0, buffer.Length);
-            result = Encoding.Default.GetString(buffer);
-            Debug.Log($"From file {filePath} was loaded data: {result}");
-        }
-        return result;
+            PlayerPrefs.SetString("SaveData", data);      
     }
 
 }
@@ -155,7 +229,7 @@ public class GameControll : MonoBehaviour
 public class GameStorageData
 {
     public int ScorePoint;
-    public int Fruits;
+    public int Health;
     public Vector3 Position;
     public int LevelNumber;
 }

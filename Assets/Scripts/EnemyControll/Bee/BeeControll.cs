@@ -7,7 +7,8 @@ public class BeeControll : MonoBehaviour
 
     [SerializeField] private float _speed;
     [SerializeField] private float _smoothSpeed;
-    [SerializeField] private Transform _target;
+    [SerializeField] private string _playerTag;
+    
     [SerializeField] private float _targetHeightPos;
     [SerializeField] private float _targetSidePos;
     [SerializeField] private bool _useMotionTarget = false;
@@ -17,18 +18,44 @@ public class BeeControll : MonoBehaviour
 
     [SerializeField] private float _timeBtwShots;
     [SerializeField] private float _startTimeBtwShots;
-    
 
-    void Start()
+    [SerializeField] private SFXType _beeSFX;
+    [SerializeField] private SFXType _beeFireSFX;
+
+    private Transform _target;
+    private bool _isTargeted = false;
+
+    private void Awake()
     {
-        
+        StartCoroutine(BeeTarget());
     }
 
-  
+    IEnumerator BeeTarget()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (GameObject.FindGameObjectWithTag(_playerTag) != null)
+        {
+            _target = GameObject.FindGameObjectWithTag(_playerTag).transform;
+        }
+        if (_target != null)
+        {
+            _isTargeted = true;
+        }
+    }
+
+    IEnumerable BeeSFX()
+    {
+        AudioManager.PlaySFX(_beeSFX);
+        yield return new WaitForSeconds(1);
+    }
+
     void Update()
     {
-        CheckTarget();
-        CheckAttack();
+        if (_isTargeted)
+        {
+            CheckTarget();
+            CheckAttack();
+        }
         
         if (_useMotionTarget)
             return;
@@ -60,6 +87,7 @@ public class BeeControll : MonoBehaviour
             {
                 _beeAnim.SetBool("itsAttack", true);
                 Instantiate(_beeBullet, _shootPoint.position, transform.rotation);
+                AudioManager.PlaySFX(_beeFireSFX);
                 _timeBtwShots = _startTimeBtwShots;
 
             }
@@ -76,6 +104,7 @@ public class BeeControll : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            //AudioManager.PlaySFX(_beeSFX);
             _useMotionTarget = true;
         }
     }

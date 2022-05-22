@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 1.4
   _smoothSpeed: 1
-  _target: {fileID: 0}
+  _playerTag: Player
   _targetHeightPos: 3
   _targetSidePos: 3
   _useMotionTarget: 0
@@ -159,6 +159,8 @@ MonoBehaviour:
   _shootPoint: {fileID: 7427129803502426603}
   _timeBtwShots: 1
   _startTimeBtwShots: 1
+  _beeSFX: 3
+  _beeFireSFX: 13
 --- !u!58 &7427129803781791096
 CircleCollider2D:
   m_ObjectHideFlags: 0
