@@ -55,6 +55,8 @@ public class CharacterController : MonoBehaviour
 
     public static Action<SFXType> onJump;
 
+    private bool _isDead = false;
+
     private int i = 0;
 
     public void OnMove(InputAction.CallbackContext context)
@@ -84,15 +86,12 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-
     private void FixedUpdate()
     {
         Jump();
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsGround);
         _isSolidObject = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsSolid);
         _isWallObject = Physics2D.OverlapCircle(_wallCheker.position, _checkRadius, whatIsWall);
-
-        // WallFall
 
         if (_isWallObject && !_isGrounded)
         {
@@ -113,9 +112,9 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-
     private void Start()
     {
+        _isDead = false;
         _airJumpCount = 0;
         var dataRaw = PlayerPrefs.GetString("SaveData");
         var gameStorageData = JsonUtility.FromJson<GameStorageData>(dataRaw);
@@ -124,6 +123,11 @@ public class CharacterController : MonoBehaviour
 
         playerLive = currPlayerLive;
         playerScore = currPlayerScore;
+    }
+
+    public void Dead()
+    {
+        _isDead = true;
     }
 
     private void Update()
@@ -146,7 +150,11 @@ public class CharacterController : MonoBehaviour
         
         if (playerLive <= 0)
         {
-            onDied?.Invoke();
+            _anim.Play("player_desappearing");
+            if (_isDead)
+            {
+                onDied?.Invoke();
+            }
         }
 
         if (playerScore != currPlayerScore)

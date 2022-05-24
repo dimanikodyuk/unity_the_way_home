@@ -62,6 +62,15 @@ public class AudioManager : MonoBehaviour
     {
         SetVolume();
         GameControll.onChangeVolume += SetVolume;
+        DiedMenu.onStopAllSounds += StopAllSounds; 
+    }
+
+    private void Update()
+    {
+        if(GameObject.FindGameObjectWithTag("DiedMenu") == null)
+        {
+            DiedMenu.onStopAllSounds -= StopAllSounds;
+        }
     }
 
     private void PlaySFXInner(SFXType sfx)
@@ -76,6 +85,12 @@ public class AudioManager : MonoBehaviour
     private void StopSFXInner()
     {
             _sfxSource.Stop();
+    }
+
+    private void StopAllSounds()
+    {
+        _sfxSource.Stop();
+        _musicSource.Stop();
     }
 
     public static void StopSFX()

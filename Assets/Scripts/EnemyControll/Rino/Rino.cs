@@ -7,7 +7,6 @@ public class Rino : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _smoothSpeed;
     [SerializeField] private SFXType _sfxRino;
-    [SerializeField] private bool _useMotionTarget = false;
     [SerializeField] private Animator _rinoAnim;
     [SerializeField] private string _playerTag;
 

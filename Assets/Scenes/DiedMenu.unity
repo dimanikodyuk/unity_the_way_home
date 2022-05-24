@@ -238,8 +238,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiedMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 1631849996357219437, guid: 9284634ce4476ab42ab4b62d6ef8532d,
+        type: 3}
+      propertyPath: m_TagString
+      value: DiedMenu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9284634ce4476ab42ab4b62d6ef8532d, type: 3}
+--- !u!1 &298389157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1631849996357219437, guid: 9284634ce4476ab42ab4b62d6ef8532d,
+    type: 3}
+  m_PrefabInstance: {fileID: 298389156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &298389158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298389157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530b5866e2476214f87e6ec2343205df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _music: 2
 --- !u!1 &358261895
 GameObject:
   m_ObjectHideFlags: 0
