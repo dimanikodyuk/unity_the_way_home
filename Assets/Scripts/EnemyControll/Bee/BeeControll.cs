@@ -43,11 +43,6 @@ public class BeeControll : MonoBehaviour
         }
     }
 
-    IEnumerable BeeSFX()
-    {
-        AudioManager.PlaySFX(_beeSFX);
-        yield return new WaitForSeconds(1);
-    }
 
     void Update()
     {
@@ -68,12 +63,12 @@ public class BeeControll : MonoBehaviour
 
     private void CheckTarget()
     {
+        
         if (!_useMotionTarget )
         {
             return;
         }
         var direction = new Vector3(_target.position.x - transform.position.x, _target.position.y + _targetHeightPos - transform.position.y, 0);
-        direction = direction.normalized;
         direction = direction.normalized;
         Motion(direction);
     }
@@ -85,7 +80,8 @@ public class BeeControll : MonoBehaviour
         {
             if (_timeBtwShots <= 0)
             {
-                _beeAnim.SetBool("itsAttack", true);
+                _beeAnim.SetBool("idle", false);
+                _beeAnim.SetBool("attack", true);
                 Instantiate(_beeBullet, _shootPoint.position, transform.rotation);
                 AudioManager.PlaySFX(_beeFireSFX);
                 _timeBtwShots = _startTimeBtwShots;
@@ -94,7 +90,8 @@ public class BeeControll : MonoBehaviour
             else
             {
                 _timeBtwShots -= Time.deltaTime;
-                _beeAnim.SetBool("itsAttack", false);
+                _beeAnim.SetBool("attack", false);
+                _beeAnim.SetBool("idle", true);
             }
         }
     }
@@ -104,7 +101,7 @@ public class BeeControll : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            //AudioManager.PlaySFX(_beeSFX);
+            AudioManager.PlaySFX(_beeSFX);
             _useMotionTarget = true;
         }
     }

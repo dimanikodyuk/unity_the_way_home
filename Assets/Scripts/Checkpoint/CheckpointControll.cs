@@ -11,10 +11,11 @@ public class CheckpointControll : MonoBehaviour
     public static Action<int, int, Vector3, int> onGameSave;
 
     private Vector3 _currPosition;
-    private int test = 2;
+    private int _levelNum;
 
     private void Start()
     {
+        _levelNum = SceneManager.GetActiveScene().buildIndex;
         _currPosition = transform.position;    
     }
 
@@ -24,7 +25,7 @@ public class CheckpointControll : MonoBehaviour
         if (collision.gameObject.tag == "Player" && !_checkpointAnimator.GetBool("checkpointActivate"))
         {
             _checkpointAnimator.SetBool("checkpointActivate", true);
-            SaveData(CharacterController.currPlayerScore, CharacterController.currPlayerLive, _currPosition, test);
+            SaveData(CharacterController.currPlayerScore, CharacterController.currPlayerLive, _currPosition, _levelNum);
         }
     }
 

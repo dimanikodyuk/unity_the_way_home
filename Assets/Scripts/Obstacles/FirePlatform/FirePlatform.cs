@@ -60,11 +60,6 @@ public class FirePlatform : MonoBehaviour
         CharacterController.currPlayerLive--;
     }
 
-    IEnumerator TakeDamage()
-    {
-        yield return new WaitForSeconds(0.8f);
-        CharacterController.currPlayerLive--;
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

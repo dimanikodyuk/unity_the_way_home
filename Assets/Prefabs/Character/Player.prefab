@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1497052163118356200}
   - component: {fileID: 1497052163118356206}
   - component: {fileID: 1497052163118356201}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1497052163274612021}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallChecker
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 1497052164153165340}
   - component: {fileID: 1497052163315230497}
   - component: {fileID: 1497052163315230496}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: textBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 1497052163498947382}
   - component: {fileID: 1497052163498947377}
   - component: {fileID: 1497052163498947376}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -378,6 +378,9 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 512
+  Enemy:
+    serializedVersion: 2
+    m_Bits: 8192
   allowJump: 3
 --- !u!114 &1497052163498947383
 MonoBehaviour:
@@ -549,7 +552,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1497052163690466329}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: GroundCheker
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -582,7 +585,7 @@ GameObject:
   - component: {fileID: 1497052164244310106}
   - component: {fileID: 1497052164244310101}
   - component: {fileID: 1497052164244310100}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -676,6 +679,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1497052163498947386}
     m_Modifications:
+    - target: {fileID: 1427259859650872295, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827848499180061852, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3558897761639042238, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5861515974382830652, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6151807343193833929, guid: 2fb83279166f72b42848517c06ced865,
         type: 3}
       propertyPath: m_Pivot.x
@@ -785,6 +808,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6538519436856779911, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7468411098107099172, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931346180207355816, guid: 2fb83279166f72b42848517c06ced865,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fb83279166f72b42848517c06ced865, type: 3}

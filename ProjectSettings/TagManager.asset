@@ -11,6 +11,9 @@ TagManager:
   - FinishLine
   - Bunny
   - WallZone
+  - PlayerUI
+  - Solid
+  - DiedMenu
   layers:
   - Default
   - TransparentFX
@@ -23,9 +26,9 @@ TagManager:
   - Ground
   - Wall
   - Obstacles
-  - 
-  - 
-  - 
+  - Solid
+  - Player
+  - Enemy
   - 
   - 
   - 

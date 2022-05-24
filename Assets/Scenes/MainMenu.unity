@@ -1461,6 +1461,7 @@ MonoBehaviour:
   _sfxClick: 0
   _musicMenu: 0
   _musicGame: 1
+  _dieMenu: 0
   _soundValue: {fileID: 137199932}
   _sfxValue: {fileID: 554159291}
 --- !u!4 &1358930585
@@ -1597,17 +1598,19 @@ MonoBehaviour:
   - _sfx: 8
     _audioClip: {fileID: 8300000, guid: 9ba10fb04f6269b4eb6941dbac01ce8c, type: 3}
   - _sfx: 7
-    _audioClip: {fileID: 8300000, guid: 049623dab52e7cd4282648431bd953df, type: 3}
+    _audioClip: {fileID: 8300000, guid: 5ed71af510dda2642a7e3e1e97a4c083, type: 3}
   - _sfx: 10
     _audioClip: {fileID: 8300000, guid: 9deed0feba4048945891492f06fd56af, type: 3}
   - _sfx: 9
     _audioClip: {fileID: 8300000, guid: 2a8a6f4923e0c174a9d986bf3aa27f79, type: 3}
   - _sfx: 12
-    _audioClip: {fileID: 8300000, guid: df7e725611848cd4fb64e14ecae067f7, type: 3}
+    _audioClip: {fileID: 8300000, guid: 1d55b03819ab247429162cdde9e75447, type: 3}
   - _sfx: 13
-    _audioClip: {fileID: 8300000, guid: 71d226ac3f3f59048b1195ee2fc6ff0f, type: 3}
+    _audioClip: {fileID: 8300000, guid: 6e8855e97560723499039927bc2a55a1, type: 3}
   - _sfx: 14
     _audioClip: {fileID: 8300000, guid: 552fef6b693bb08448c90f6f7dc24e30, type: 3}
+  - _sfx: 16
+    _audioClip: {fileID: 8300000, guid: 795f4c08e0edfb34cb60abee05ae3714, type: 3}
   - _sfx: 15
     _audioClip: {fileID: 8300000, guid: 8fcc66570187f9e48ba8c378b470b394, type: 3}
   _musicDatas:
@@ -1615,6 +1618,8 @@ MonoBehaviour:
     _clip: {fileID: 8300000, guid: eacdb054a1034b04daeaa6a590ee01ed, type: 3}
   - _musicType: 1
     _clip: {fileID: 8300000, guid: c6065447c4bf3a84dae310d7dab6cbd5, type: 3}
+  - _musicType: 2
+    _clip: {fileID: 8300000, guid: 1dc626ff30e5dce4eb2248ad5a6efe21, type: 3}
   _audioMixer: {fileID: 24100000, guid: 02aaafa7ae402e24a9d32aee4bb4636f, type: 2}
 --- !u!4 &1455655656
 Transform:

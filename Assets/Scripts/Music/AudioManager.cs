@@ -24,6 +24,7 @@ public enum SFXType
     BeeFire,
     FatBirdFall,
     FatBirdTrigger,
+    RinoWalk,
 
 }
 
@@ -31,7 +32,7 @@ public enum MusicType
 {
     menuBackground,
     gameBackground,
-    loose,
+    dieMenu,
 }
 
 public class AudioManager : MonoBehaviour

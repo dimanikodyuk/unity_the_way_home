@@ -21,6 +21,7 @@ public class GameControll : MonoBehaviour
     [SerializeField] private SFXType _sfxClick;
     [SerializeField] private MusicType _musicMenu;
     [SerializeField] private MusicType _musicGame;
+    [SerializeField] private MusicType _dieMenu;
     [SerializeField] private TMP_Text _soundValue;
     [SerializeField] private TMP_Text _sfxValue;
 
@@ -36,7 +37,7 @@ public class GameControll : MonoBehaviour
     public void Start()
     {
         PlayMusic(_musicMenu);
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(_menuSetting);
 
         MenuController.onStartNewGame += StartNewGameHandler;
@@ -48,6 +49,7 @@ public class GameControll : MonoBehaviour
         
         CharacterController.onPaused += PauseMenu;
         CharacterController.onJump += PlayShortSFX;
+        CharacterController.onDied += OnDied;
 
         CheckpointControll.onGameSave += PrepateGameStorageData;
        
@@ -59,6 +61,10 @@ public class GameControll : MonoBehaviour
         FruitsControll.onCollectedFruits += PlayShortSFX;
     }
 
+    public void Update()
+    {
+       
+    }
 
     // --- START GAME MENU --- //
     private void StartNewGameHandler()
@@ -68,7 +74,6 @@ public class GameControll : MonoBehaviour
         int score = 0;
         int lives = _livesPlayer;
         Vector3 pos = new Vector3(-7.32f, -2.57f, 1);
-
         StartCoroutine(LoadLevelCoroutine(levelNum, score, lives, pos));
         var gameStorageData = GetGameStorageData(score, lives, pos, levelNum);
         var gameStorageRaw = JsonUtility.ToJson(gameStorageData, true);
@@ -86,6 +91,8 @@ public class GameControll : MonoBehaviour
         PlayShortSFX(_sfxClick);
         LoadGameStorageData();
     }
+    
+
 
     private void MainMenuHandler()
     {      
@@ -121,6 +128,11 @@ public class GameControll : MonoBehaviour
             isPaused = false;
             Time.timeScale = 1;
         }
+    }
+
+    private void OnDied()
+    {
+        SceneManager.LoadScene(1);
     }
 
     private void SoundVolumeSetting(float musicVolume)
@@ -176,29 +188,13 @@ public class GameControll : MonoBehaviour
         SceneManager.LoadScene(levelNum);
         PlayMusic(_musicGame);
         yield return new WaitForSeconds(0.25f);
-        //CharacterController.currPlayerLive = healthCount;
-        //CharacterController.currPlayerScore = scorePoint;
-        //onInitLive?.Invoke(healthCount);
 
-        if (levelNum != 1 && GameObject.FindGameObjectWithTag("Player") == null)
+        if (levelNum != 0 && GameObject.FindGameObjectWithTag("Player") == null)
         {
             Instantiate(_player, playerPoss, Quaternion.identity);
         }
     }
 
-    // --- START PLAYER UI --- //
-
-    public void ChangeLive(int liveCount)
-    {
-        onChangeLive?.Invoke(liveCount);
-    }
-
-    public void ChangeScore(int scoreCount)
-    {
-        onChangeScore?.Invoke(scoreCount);
-    }
-
-    // -- END PLAYER UI --- //
 
     private void LoadGameStorageData()
     {

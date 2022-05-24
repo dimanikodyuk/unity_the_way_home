@@ -36,10 +36,10 @@ public class CharacterController : MonoBehaviour
     private float _checkRadius = 0.10f;        // Радиус определения земли
     
     public LayerMask whatIsGround;             // Какой слой является землей
-    public LayerMask whatIsSolid;             // Какой слой является землей
-    public LayerMask whatIsWall;             // Какой слой является стеной
+    public LayerMask whatIsSolid;              // Какой слой является твердым
+    public LayerMask whatIsWall;               // Какой слой является стеной
 
-    public int allowJump;                 // Количество доступных прыжков
+    public int allowJump;                      // Количество доступных прыжков
     private int _airJumpCount;                 // Счетчик прыжков
 
     public static int currPlayerLive;
@@ -47,7 +47,7 @@ public class CharacterController : MonoBehaviour
     public static int currPlayerScore;
     private int playerScore = 0;
 
-    public static Action onDeath;
+    public static Action onDied;
     public static Action onPaused;
 
     public static Action<int> onChangeLive;
@@ -84,15 +84,16 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+
     private void FixedUpdate()
     {
         Jump();
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsGround);
         _isSolidObject = Physics2D.OverlapCircle(groundCheck.position, _checkRadius, whatIsSolid);
         _isWallObject = Physics2D.OverlapCircle(_wallCheker.position, _checkRadius, whatIsWall);
-      
+
         // WallFall
-       
+
         if (_isWallObject && !_isGrounded)
         {
             rigid.velocity = new Vector2(rigid.velocity.x, -0.3f);
@@ -142,15 +143,23 @@ public class CharacterController : MonoBehaviour
             ChangeLive(currPlayerLive);
             playerLive = currPlayerLive;
         }
-        else if (playerLive <= 0)
+        
+        if (playerLive <= 0)
         {
-            SceneManager.LoadScene(1);
-        }    
+            onDied?.Invoke();
+        }
+
         if (playerScore != currPlayerScore)
         {
             ChangeScore(currPlayerScore);
             playerScore = currPlayerScore;
         }
+
+        if (gameObject.transform.position.y < -6)
+        {
+            onDied?.Invoke();
+        }
+
     }
 
     
