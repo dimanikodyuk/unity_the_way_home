@@ -116,6 +116,7 @@ public class CharacterController : MonoBehaviour
     {
         _isDead = false;
         _airJumpCount = 0;
+
         var dataRaw = PlayerPrefs.GetString("SaveData");
         var gameStorageData = JsonUtility.FromJson<GameStorageData>(dataRaw);
         currPlayerLive = gameStorageData.Health;
@@ -223,6 +224,7 @@ public class CharacterController : MonoBehaviour
 
             else if (_airJumpCount < allowJump - 1)
             {
+               
                 onJump?.Invoke(_jumpSFX);
                 rigid.velocity += Vector2.up * _jumpSpeed;
                 Instantiate(_jumpEffect, transform.position, Quaternion.identity);

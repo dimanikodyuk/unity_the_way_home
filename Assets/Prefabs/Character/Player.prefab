@@ -378,10 +378,8 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 512
-  Enemy:
-    serializedVersion: 2
-    m_Bits: 8192
   allowJump: 3
+  _tmpJumpSpeed: 0
 --- !u!114 &1497052163498947383
 MonoBehaviour:
   m_ObjectHideFlags: 0

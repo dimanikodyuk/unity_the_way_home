@@ -5,9 +5,7 @@ using UnityEngine;
 public class PlantBullet : MonoBehaviour
 {
     [SerializeField] private float _speedBullet;
-    [SerializeField] private float _lifetime;
     [SerializeField] private float _distance;
-    [SerializeField] private int damage;
     [SerializeField] private LayerMask _whatIsSolid;
 
     private void Update()
@@ -22,7 +20,6 @@ public class PlantBullet : MonoBehaviour
             Destroy(gameObject);
         }
         transform.Translate(Vector2.left * _speedBullet * Time.deltaTime);
-        
 
     }
 }
