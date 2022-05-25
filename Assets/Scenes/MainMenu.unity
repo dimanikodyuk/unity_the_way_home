@@ -1613,6 +1613,8 @@ MonoBehaviour:
     _audioClip: {fileID: 8300000, guid: 795f4c08e0edfb34cb60abee05ae3714, type: 3}
   - _sfx: 15
     _audioClip: {fileID: 8300000, guid: 8fcc66570187f9e48ba8c378b470b394, type: 3}
+  - _sfx: 17
+    _audioClip: {fileID: 8300000, guid: 871edb7579986a441a4417960ac5f137, type: 3}
   _musicDatas:
   - _musicType: 0
     _clip: {fileID: 8300000, guid: eacdb054a1034b04daeaa6a590ee01ed, type: 3}

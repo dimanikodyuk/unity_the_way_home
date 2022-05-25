@@ -25,6 +25,7 @@ public enum SFXType
     FatBirdFall,
     FatBirdTrigger,
     RinoWalk,
+    ChickenWalk,
 
 }
 

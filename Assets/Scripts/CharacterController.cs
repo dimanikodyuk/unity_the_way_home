@@ -145,6 +145,8 @@ public class CharacterController : MonoBehaviour
 
         if (playerLive != currPlayerLive)
         {
+            _anim.Play("player_hit");
+            _anim.Play("player_idle");
             ChangeLive(currPlayerLive);
             playerLive = currPlayerLive;
         }

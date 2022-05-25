@@ -73,7 +73,7 @@ public class GameControll : MonoBehaviour
         int levelNum = 2;
         int score = 0;
         int lives = _livesPlayer;
-        Vector3 pos = new Vector3(-7.32f, -2.57f, 1);
+        Vector3 pos = new Vector3(-43.57f, -3.12f, 1);
         StartCoroutine(LoadLevelCoroutine(levelNum, score, lives, pos));
         var gameStorageData = GetGameStorageData(score, lives, pos, levelNum);
         var gameStorageRaw = JsonUtility.ToJson(gameStorageData, true);
