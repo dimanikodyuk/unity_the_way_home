@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Finish : MonoBehaviour
 {
@@ -9,25 +10,26 @@ public class Finish : MonoBehaviour
     public static Action<int, int, Vector3, int> onGameSave;
 
     private Vector3 _currPosition;
-    private int test = 2;
+    private int _levelNum;
 
     private void Start()
     {
-        _currPosition = transform.position;
+        _levelNum = SceneManager.GetActiveScene().buildIndex+2;
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && !_finishAnimator.GetBool("finishActivate"))
+        if (collision.gameObject.tag == "Player")
         {
             _finishAnimator.SetBool("finishActivate", true);
-            SaveData(test, test, _currPosition, test);
+            SaveData(CharacterController.currPlayerScore, CharacterController.currPlayerLive, _currPosition, _levelNum);
+            SceneManager.LoadScene(3);
         }
     }
 
-    private void SaveData(int scorePoint, int fruits, Vector3 position, int levelNumber)
+    private void SaveData(int scorePoint, int health, Vector3 position, int levelNumber)
     {
-        onGameSave?.Invoke(scorePoint, fruits, position, levelNumber);
+        onGameSave?.Invoke(scorePoint, health, position, levelNumber);
     }
 }

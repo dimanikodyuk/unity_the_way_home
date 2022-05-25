@@ -13,6 +13,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Button _quitGame;
     [SerializeField] private Button _loadGame;
     [SerializeField] private Button _settingGame;
+
   
     public static Action onStartNewGame;
     public static Action onRestartGame;
@@ -20,6 +21,8 @@ public class MenuController : MonoBehaviour
     public static Action onMainMenu;
     public static Action onSettingNewGame;
     public static Action onQuitNewGame;
+
+    public static Action onNextLevel;
 
     private void Start()
     {
@@ -30,7 +33,6 @@ public class MenuController : MonoBehaviour
         _loadGame.onClick.AddListener(LoadGameHandler);
         _settingGame.onClick.AddListener(SettingsHandler);
     }
-
 
     public void NewGameHandler()
     {

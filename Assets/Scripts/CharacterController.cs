@@ -176,6 +176,7 @@ public class CharacterController : MonoBehaviour
     
     private void ChangeLive(int live)
     {
+        Debug.Log(live);
         onChangeLive?.Invoke(live);
     }
     

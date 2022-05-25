@@ -17,7 +17,7 @@ public class PlayerUI : MonoBehaviour
 
         CharacterController.onChangeLive += ChangeLive;
         CharacterController.onChangeScore += ChangeScore;
-
+ 
         ChangeLive(gameStorageData.Health);
         ChangeScore(gameStorageData.ScorePoint);
          
@@ -36,6 +36,10 @@ public class PlayerUI : MonoBehaviour
             if (i > liveCount-1)
             {
                 _liveImage[i].SetActive(false);
+            }
+            else
+            {
+                _liveImage[i].SetActive(true);
             }
         }
     }

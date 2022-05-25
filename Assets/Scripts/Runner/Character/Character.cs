@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
@@ -12,12 +13,16 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject _jumpEffect;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _whatIsGround;
-    [SerializeField] private TMP_Text _charText;
+    [SerializeField] private GameObject[] _liveImages;
+
+    [SerializeField] private SFXType _playerSFX;
 
     private float _checkRadius = 0.15f;
     private bool _isGrounded = false;
 
     public static int countLives = 3;
+    private int _tmpLives;
+
     private int _pressCount = 0;
 
     public void OnJump(InputAction.CallbackContext context)
@@ -33,6 +38,7 @@ public class Character : MonoBehaviour
     void Start()
     {
         _charAnim.SetFloat("Speed", 1.0f);
+        ChangeLive(countLives);
     }
 
     void FixedUpdate()
@@ -42,23 +48,36 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        _charText.text = countLives.ToString();
+        if (_tmpLives != countLives)
+        {
+            ChangeLive(countLives);
+        }
+
+        if (countLives <= 0)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
+
+    private void ChangeLive(int livesCount)
+    {
+        for (int i = 0; i < _liveImages.Length; i++)
+        {
+            if (i > livesCount - 1)
+            {
+                _liveImages[i].SetActive(false);
+            }
+        }
+    }
+
 
     private void Jump()
     {
         if (_isGrounded)
         {
+            AudioManager.PlaySFX(_playerSFX);
             _rb2D.AddForce(Vector2.up * _jumpForce);
             Instantiate(_jumpEffect, transform.position, Quaternion.identity);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Obstacles")
-        {
-            countLives--;
         }
     }
 

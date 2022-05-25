@@ -52,13 +52,18 @@ public class GameControll : MonoBehaviour
         CharacterController.onDied += OnDied;
 
         CheckpointControll.onGameSave += PrepateGameStorageData;
+        Finish.onGameSave += PrepateGameStorageData;
        
         MenuSettings.onBack += BackSetting;
+        MenuSettings.onMenu += MainMenuHandler;
         MenuSettings.onPressed += PlayShortSFX;
         MenuSettings.onChangeMusicVolume += SoundVolumeSetting;
         MenuSettings.onChangeSFXVolume += SFXVolumeSetting;
 
         FruitsControll.onCollectedFruits += PlayShortSFX;
+
+        CompleteLevel.onNextLevel += NextLevel;
+        CompleteLevel.onMenu += MainMenuHandler;
     }
 
     public void Update()
@@ -92,11 +97,16 @@ public class GameControll : MonoBehaviour
         LoadGameStorageData();
     }
     
-
+    private void NextLevel()
+    {
+        PlayShortSFX(_sfxClick);
+        LoadGameStorageData();
+    }
 
     private void MainMenuHandler()
     {      
         PlayShortSFX(_sfxClick);
+        _menuSetting.SetActive(false);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -189,7 +199,7 @@ public class GameControll : MonoBehaviour
         PlayMusic(_musicGame);
         yield return new WaitForSeconds(0.25f);
 
-        if (levelNum != 0 && GameObject.FindGameObjectWithTag("Player") == null)
+        if (levelNum == 2 && GameObject.FindGameObjectWithTag("Player") == null)
         {
             Instantiate(_player, playerPoss, Quaternion.identity);
         }

@@ -26,6 +26,7 @@ public enum SFXType
     FatBirdTrigger,
     RinoWalk,
     ChickenWalk,
+    BunnyJump,
 
 }
 
@@ -34,6 +35,7 @@ public enum MusicType
     menuBackground,
     gameBackground,
     dieMenu,
+    completeLevel,
 }
 
 public class AudioManager : MonoBehaviour
@@ -63,7 +65,8 @@ public class AudioManager : MonoBehaviour
     {
         SetVolume();
         GameControll.onChangeVolume += SetVolume;
-        DiedMenu.onStopAllSounds += StopAllSounds; 
+        DiedMenu.onStopAllSounds += StopAllSounds;
+        CompleteLevel.onAllSoundStop += StopAllSounds;
     }
 
     private void Update()

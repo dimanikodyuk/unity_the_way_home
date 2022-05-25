@@ -14,21 +14,25 @@ public class Obstacles : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("NextLine"))
+        if (collision.gameObject.tag == "NextLine")
         {
             obstaclesGenerator.GenerateNextObstacles();
         }
         
-        if (collision.gameObject.CompareTag("FinishLine"))
+        if (collision.gameObject.tag == "FinishLine")
         {
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
+        //if (collision.gameObject.tag == "Player")
+        //{
+        //    Destroy(gameObject);
+        //    Character.countLives--;
+        //}
 
-        //collision.gameObject.CompareTag("Bunny") ||
+        //if (collision.gameObject.tag == "Bunny")
+        //{
+        //    Bunny.countLives--;
+        //}
     }
 }

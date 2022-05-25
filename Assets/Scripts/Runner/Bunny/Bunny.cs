@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Bunny : MonoBehaviour
@@ -12,20 +13,22 @@ public class Bunny : MonoBehaviour
     [SerializeField] private GameObject _jumpEffect;
     [SerializeField] private Transform _groundCheck;              
     [SerializeField] private LayerMask _whatIsGround;
-    [SerializeField] private TMP_Text _bunnyText;
-
+    [SerializeField] private GameObject[] _livesImages;
+    [SerializeField] private SFXType _bunnySFX;
     
     private float _checkRadius = 0.15f;        
     private bool _isGrounded = false;
 
     public static int countLives = 3;
-    //private int score = 0;
+    private int _tmpLives;
 
-    // Start is called before the first frame update
     void Start()
     {
         _bunnyAnim.SetBool("run", true);
         _bunnyAnim.SetFloat("speed", 1.0f);
+        _tmpLives = countLives;
+        ChangeLive(countLives);
+        
     }
 
     void FixedUpdate()
@@ -35,13 +38,34 @@ public class Bunny : MonoBehaviour
 
     private void Update()
     {
-        _bunnyText.text = countLives.ToString();
+        if (_tmpLives != countLives)
+        {
+            ChangeLive(countLives);
+            _tmpLives = countLives;
+        }
+           
+        if (countLives <= 0)
+        {
+            SceneManager.LoadScene(3);
+        }
+    }
+
+    private void ChangeLive(int lives)
+    {
+        for (int i = 0; i < _livesImages.Length; i++)
+        {
+            if (i > lives - 1)
+            {
+                _livesImages[i].SetActive(false);
+            }
+        }
     }
 
     private void Jump()
     {
        if (_isGrounded )
         {
+            AudioManager.PlaySFX(_bunnySFX);
             _rb2D.AddForce(Vector2.up * _jumpForce);
             Instantiate(_jumpEffect, transform.position, Quaternion.identity);
         }

@@ -12,15 +12,17 @@ public class TrampButton : MonoBehaviour
     [SerializeField] private GameObject _currCamera;
     [SerializeField] private GameObject _doorCamera;
 
+    [SerializeField] private GameObject _enemyObject;
+
     private Animator _anim;
     private float _timeCounter = 0f;
 
     public static bool _doorOpen = false;
     public static bool _doorClose = false;
 
+
     private void UnMotion()
     {
-        Debug.Log("DOOR OPEN");
         var normalizedTime = _timeCounter / _duration;
         if (_timeCounter < _duration)
         {
@@ -32,12 +34,12 @@ public class TrampButton : MonoBehaviour
             _timeCounter = 0;
             _doorOpen = false;
             _doorClose = false;
+
         }
     }
 
     private void Motion()
     {
-        Debug.Log("DOOR CLOSES");
         var normalizedTime = _timeCounter / _duration;
         if (_timeCounter < _duration)
         {
@@ -52,6 +54,7 @@ public class TrampButton : MonoBehaviour
 
             _currCamera.SetActive(true);
             _doorCamera.SetActive(false);
+            ActivateEnemy();
         }
     }
 
@@ -76,7 +79,19 @@ public class TrampButton : MonoBehaviour
     private void Start()
     {
         _anim = GetComponent<Animator>();
+        
     }
+
+    private void DisableEnemy()
+    {
+        _enemyObject.SetActive(false);
+    }
+
+    private void ActivateEnemy()
+    {
+        _enemyObject.SetActive(true);
+    }
+
 
     private void Update()
     {
@@ -96,6 +111,7 @@ public class TrampButton : MonoBehaviour
     {
         if (collision.gameObject.tag == "Box")
         {
+            DisableEnemy();
             gameObject.GetComponent<Collider2D>().enabled = true;
             _anim.SetBool("on", true);
             _anim.SetBool("off", false);
